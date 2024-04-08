@@ -19,19 +19,32 @@ namespace Snake
             gameDrawingControl1.GameLogic = GameLogic;
             gameDrawingControl1.Menu = GameMenu;
             GameMenu.MenuItemChanged += GameMenu_MenuItemChanged;
+            GameLogic.UpdateSnakeLivescore += GameLogic_UpdateSnakeLivescore;
+            SetupGameLogic();
+        }
+
+        private void GameLogic_UpdateSnakeLivescore(object sender, EventArgs e)
+        {
+            Text = $"SNAKE Score: {GameLogic.Livescore}";
+        }
+
+        private void SetupGameLogic()
+        {
+            GameLogic.WallCollisionEnabled = GameMenu.WallCollisionEnabled;
+            GameLogic.Difficulty = GameMenu.GameDifficulty;
+            GameLogic.ObstaclesEnabled = GameMenu.Obstacles;
         }
 
         private void GameLogic_UpdateIntervalChanged(object sender, EventArgs e)
         {
             timer.Interval = GameLogic.UpdateInterval;
-            Text = $"Snake {GameLogic.Highscore}";
         }
 
         private void GameMenu_MenuItemChanged(object sender, MenuItemChangedEventArgs e)
         {
             if (e.ItemName == GameMenu.WallsMenuItem.Name)
             {
-                GameLogic.WallCollision = (WallCollisionOption)GameMenu.WallsMenuItem.CurrentOptionIndex;
+                GameLogic.WallCollisionEnabled = GameMenu.WallCollisionEnabled;
             }
             if (e.ItemName == GameMenu.DifficultyMenuItem.Name)
             {
@@ -39,8 +52,12 @@ namespace Snake
             }
             if (e.ItemName == GameMenu.ObstaclesMenuItem.Name)
             {
-                GameLogic.ObstaclesEnabled = (ObstacleOption)GameMenu.ObstaclesMenuItem.CurrentOptionIndex == 0;
+                GameLogic.ObstaclesEnabled = GameMenu.Obstacles;
             }
+            //if (e.Itemname == GameMenu.SoundMenuItem.Name)
+            //{
+            //    GameLogic.
+            //}
             gameDrawingControl1.Invalidate();
         }
 

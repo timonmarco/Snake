@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Snake
 {
     internal static class Program
     {
+        //public const string FilePath = ""
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

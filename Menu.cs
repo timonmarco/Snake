@@ -17,10 +17,9 @@ namespace Snake
         public MenuItem SelectedMenuItem => MenuItems[selectedMenuItemIndex];
 
         public GameDifficulty GameDifficulty => (GameDifficulty)DifficultyMenuItem.CurrentOptionIndex;
-        public WallCollisionOption WallCollisionOption => (WallCollisionOption)WallsMenuItem.CurrentOptionIndex;
-        public ObstacleOption ObstacleOption => (ObstacleOption)ObstaclesMenuItem.CurrentOptionIndex;
-        public SoundOption SoundOption => (SoundOption)SoundMenuItem.CurrentOptionIndex;
 
+        public bool WallCollisionEnabled => WallsMenuItem.CurrentOptionIndex == 0;
+        public bool SoundEnabled => SoundMenuItem.CurrentOptionIndex == 0;
         public bool Obstacles => ObstaclesMenuItem.CurrentOptionIndex == 0;
 
         public Menu()

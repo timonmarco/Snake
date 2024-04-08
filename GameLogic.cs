@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace Snake
@@ -8,7 +10,9 @@ namespace Snake
     public partial class GameLogic
     {
         public event EventHandler UpdateIntervalChanged;
+        public event EventHandler UpdateSnakeLivescore;
 
+        private const string HighscoreFilePath = "highscore.json";
         private static Random random = new Random();
         private GameDifficulty difficulty;
         private int updateInterval;
@@ -25,6 +29,8 @@ namespace Snake
 
         public int Highscore { get; set; }
 
+        public int Livescore { get; set; }
+
         public int UpdateInterval
         {
             get => updateInterval;
@@ -36,9 +42,7 @@ namespace Snake
             }
         }
 
-        public WallCollisionOption WallCollision { get; set; }
-
-        public ObstacleOption ObstaclesOption { get; set; }
+        public bool WallCollisionEnabled { get; set; } = false;
 
         public GameDifficulty Difficulty
         {
@@ -53,6 +57,8 @@ namespace Snake
             }
         }
 
+
+
         public GameState CurrentState { get; set; }
 
         public Point Food { get; set; }
@@ -65,6 +71,7 @@ namespace Snake
 
         public GameLogic()
         {
+            LoadHighscore();
             ResetGame();
             CurrentState = GameState.StartScreen;
         }
@@ -76,7 +83,17 @@ namespace Snake
                 if (SnakeBodyParts.Count > Highscore)
                 {
                     Highscore = SnakeBodyParts.Count - 3;
+                    SaveHighscore();
                 }
+            }
+        }
+
+        public void SnakeLivescore()
+        {
+            if (CurrentState == GameState.Running)
+            {
+                Livescore = SnakeBodyParts.Count - 3;
+                OnUpdateSnakeLivescore();
             }
         }
 
@@ -99,7 +116,7 @@ namespace Snake
             while (!validPosition)
             {
                 Food = new Point(random.Next(0, GameFieldSize.Width), random.Next(0, GameFieldSize.Height));
-                validPosition = !SnakeBodyParts.Contains(Food);
+                validPosition = !SnakeBodyParts.Contains(Food) && !Obstacles.Contains(Food);
             }
         }
 
@@ -140,6 +157,11 @@ namespace Snake
                     break;
             }
 
+            if (CurrentState == GameState.Running)
+            {
+                SnakeLivescore();
+            }
+
             if (SnakeBodyCollision(newHead))
             {
                 CurrentState = GameState.Gameover;
@@ -149,7 +171,7 @@ namespace Snake
 
             if (OutsideGameFieldRange(newHead))
             {
-                if (WallCollision == WallCollisionOption.WallsOff)
+                if (!WallCollisionEnabled)
                 {
                     newHead = WallsOffPosition(newHead);
                 }
@@ -167,7 +189,7 @@ namespace Snake
                 GenerateFood();
                 if (Difficulty == GameDifficulty.Nightmare)
                 {
-                    UpdateInterval -= 10;
+                    UpdateInterval -= 2;
                 }
 
                 if (ObstaclesEnabled && SnakeBodyParts.Count % 5 == 0)
@@ -226,6 +248,23 @@ namespace Snake
             CurrentState = GameState.StartScreen;
         }
 
+        private void LoadHighscore()
+        {
+            if (File.Exists(HighscoreFilePath))
+            {
+                var json = File.ReadAllText(HighscoreFilePath);
+                var highscoreData = JsonConvert.DeserializeObject<HighscoreData>(json);
+                Highscore = highscoreData.Highscore;
+            }
+        }
+
+        private void SaveHighscore()
+        {
+            var highscoreData = new HighscoreData() { Highscore = Highscore };
+            var json = JsonConvert.SerializeObject(highscoreData);
+            File.WriteAllText(HighscoreFilePath, json);
+        }
+
         private void OnDifficultyChanged()
         {
             switch (difficulty)
@@ -248,6 +287,11 @@ namespace Snake
         protected virtual void OnUpdateIntervalChanged()
         {
             UpdateIntervalChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnUpdateSnakeLivescore()
+        {
+            UpdateSnakeLivescore?.Invoke(this, EventArgs.Empty);
         }
     }
 }

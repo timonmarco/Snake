@@ -16,14 +16,15 @@ namespace Snake
         private Bitmap snakehead;
         private Bitmap snakebody;
         private Bitmap poopObstacle;
-        private Bitmap left45DegreeSnake;
-        private Bitmap right45DegreeSnake;
+        private Bitmap TopToLeftRightToTop;
+        private Bitmap TopToRightLeftToTop;
+        private Bitmap BottomToRightLeftToBottom;
+        private Bitmap BottomToLeftRightToBottom;
 
         private Font gameOverFont = new Font("Neon Pixel-7", 140f, FontStyle.Bold);
         private Font restartFont = new Font("Nintendo DS BIOS", 30f, FontStyle.Bold);
         private Font StartGameHeaderFont = new Font("Neon Pixel-7", 190f, FontStyle.Bold);
 
-        private Brush menuBrushFocus = Brushes.Red;
         private Brush menuBrush = Brushes.Purple;
         private Brush startMenuBrush = Brushes.Maroon;
         private Brush gameOverBackgroundBrush = new SolidBrush(Color.FromArgb(100, Color.White));
@@ -48,6 +49,8 @@ namespace Snake
             snakehead = Resources.snakehead;
             snakebody = Resources.snakebody;
             poopObstacle = Resources.poop;
+            TopToLeftRightToTop = Resources.TopToLeftRightToTop;
+
             coordHelper = new CoordinationSystemHelper(ClientSize, new Size(20, 20));
         }
 
@@ -100,6 +103,11 @@ namespace Snake
             textSize = DrawTextCenter(g, "Press ESCAPE to go to Startscreen.", restartFont, Brushes.Black, textPoint);
             textPoint = new PointF(textPoint.X, textPoint.Y + textSize.Height);
         }
+
+        //private Color GetRandomColor(int color)
+        //{
+        //    RGB rgbColor = ColorHelper.ColorConverter
+        //}
 
         private void DrawMenu(Graphics g)
         {
