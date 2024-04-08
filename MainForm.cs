@@ -61,11 +61,6 @@ namespace Snake
             gameDrawingControl1.Invalidate();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)

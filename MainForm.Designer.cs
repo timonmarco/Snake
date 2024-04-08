@@ -44,6 +44,7 @@
             this.gameDrawingControl1.BackColor = System.Drawing.Color.White;
             this.gameDrawingControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gameDrawingControl1.Location = new System.Drawing.Point(0, 0);
+            this.gameDrawingControl1.Menu = null;
             this.gameDrawingControl1.Name = "gameDrawingControl1";
             this.gameDrawingControl1.Size = new System.Drawing.Size(884, 881);
             this.gameDrawingControl1.TabIndex = 0;
@@ -58,7 +59,6 @@
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "Snake";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

@@ -42,6 +42,7 @@ namespace Snake
                 OnGameLogicChanged();
             }
         }
+
         public GameDrawingControl()
         {
             InitializeComponent();
@@ -73,6 +74,9 @@ namespace Snake
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             e.Graphics.Clear(BackColor);
             DrawGrid(e.Graphics);
             DrawBodyParts(e.Graphics);
