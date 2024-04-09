@@ -15,11 +15,11 @@ namespace Snake
         private Bitmap apple;
         private Bitmap snakehead;
         private Bitmap snakebody;
-        private Bitmap poopObstacle;
-        private Bitmap TopToLeftRightToTop;
-        private Bitmap TopToRightLeftToTop;
-        private Bitmap BottomToRightLeftToBottom;
-        private Bitmap BottomToLeftRightToBottom;
+        private Bitmap blockObstacle;
+        private Bitmap TopToLeft_RightToTop;
+        private Bitmap TopToRight_LeftToTop;
+        private Bitmap BottomToRight_LeftToBottom;
+        private Bitmap BottomToLeft_RightToBottom;
 
         private Font gameOverFont = new Font("Neon Pixel-7", 140f, FontStyle.Bold);
         private Font restartFont = new Font("Nintendo DS BIOS", 30f, FontStyle.Bold);
@@ -49,9 +49,11 @@ namespace Snake
             apple = Resources.apfel;
             snakehead = Resources.snakehead;
             snakebody = Resources.snakebody;
-            poopObstacle = Resources.poop;
-            TopToLeftRightToTop = Resources.TopToLeftRightToTop;
-
+            blockObstacle = Resources.block;
+            TopToLeft_RightToTop = Resources.TopToLeft_RightToTop;
+            TopToRight_LeftToTop = Resources.TopToRight_LeftToTop;
+            BottomToRight_LeftToBottom = Resources.BottomToRight_LeftToBottom;
+            BottomToLeft_RightToBottom = Resources.BottomToLeft_RightToBottom;
             coordHelper = new CoordinationSystemHelper(ClientSize, new Size(20, 20));
         }
 
@@ -200,26 +202,23 @@ namespace Snake
             {
                 PointF obstaclePosition = coordHelper.ToDrawingPoint(obstacle);
                 SizeF obstacleSize = coordHelper.ToDrawingSize(new Size(1, 1));
-                g.DrawImage(poopObstacle, obstaclePosition.X, obstaclePosition.Y, obstacleSize.Width, obstacleSize.Height);
+                g.DrawImage(blockObstacle, obstaclePosition.X, obstaclePosition.Y, obstacleSize.Width, obstacleSize.Height);
             }
         }
 
         private void DrawBodyParts(Graphics g)
         {
             int lastThreeSnakeElements = 0;
-
             foreach (Point part in GameLogic.SnakeBodyParts)
             {
-
                 RectangleF rectS = coordHelper.ToDrawingRectangle(new Rectangle(part, new Size(1, 1)));
-
                 if (lastThreeSnakeElements < 3)
                 {
                     rectS.Inflate(new SizeF(coordHelper.FieldSize.Width / 30f, -coordHelper.FieldSize.Height / 20f));
                 }
-
                 RectangleF rect = coordHelper.ToDrawingRectangle(new Rectangle(part, new Size(1, 1)));
                 rect.Inflate(new SizeF(coordHelper.FieldSize.Width / 10f, coordHelper.FieldSize.Height / 10f));
+
                 if (part == GameLogic.SnakeBodyParts.Last())
                 {
                     float angle = 0f;
@@ -245,10 +244,22 @@ namespace Snake
                     int currentIndex = GameLogic.SnakeBodyParts.ToList().IndexOf(part);
                     Point nextPart = GameLogic.SnakeBodyParts.ElementAt(currentIndex + 1);
                     float angle = CalculateAngle(part, nextPart);
+                    //Bitmap image = GetCurveSnakeBody(part, nextPart);
                     DrawRotatedImage(g, snakebody, rectS, angle);
                 }
             }
         }
+
+
+        //private Bitmap GetCurveSnakeBody(Point currentPart, Point nextPart)
+        //{
+        //    int calcX = nextPart.X - currentPart.X;
+        //    int calcY = nextPart.Y - currentPart.Y;
+
+        //    if (calcX == 0 && calcY == -1)
+        //        return BottomToLeft_RightToBottom;
+
+        //}
 
         private void DrawRotatedImage(Graphics g, Bitmap image, RectangleF rect, float angle)
         {

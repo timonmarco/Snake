@@ -5,6 +5,8 @@ namespace Snake
     public class Menu : IMenu
     {
         private int selectedMenuItemIndex;
+        private GameLogic gameLogic;
+
         public MenuItem DifficultyMenuItem { get; set; }
         public MenuItem ObstaclesMenuItem { get; set; }
         public MenuItem WallsMenuItem { get; set; }
@@ -24,6 +26,7 @@ namespace Snake
 
         public Menu()
         {
+            gameLogic = new GameLogic();
             DifficultyMenuItem = new MenuItem("Difficulty", "Easy", "Medium", "Hard", "Nightmare");
             ObstaclesMenuItem = new MenuItem("Obstacles", "On", "Off");
             WallsMenuItem = new MenuItem("Walls", "On", "Off");
@@ -40,28 +43,33 @@ namespace Snake
         public void SelectNextMenuItem()
         {
             selectedMenuItemIndex = (selectedMenuItemIndex + 1) % MenuItems.Length;
+            gameLogic.PlayMenuButtonSound();
         }
 
         public void SelectPreviousMenuItem()
         {
             selectedMenuItemIndex = (selectedMenuItemIndex == 0) ? MenuItems.Length - 1 : selectedMenuItemIndex - 1;
+            gameLogic.PlayMenuButtonSound();
         }
 
         public void SelectNextOption()
         {
             SelectedMenuItem.SelectNextOption();
             OnMenuItemChanged(SelectedMenuItem.Name);
+            gameLogic.PlayMenuButtonSound();
         }
 
         public void SelectPreviousOption()
         {
             SelectedMenuItem.SelectPreviousOption();
             OnMenuItemChanged(SelectedMenuItem.Name);
+            gameLogic.PlayMenuButtonSound();
         }
 
         protected virtual void OnMenuItemChanged(string menuItemName)
         {
             MenuItemChanged?.Invoke(this, new MenuItemChangedEventArgs { ItemName = menuItemName });
+            gameLogic.PlayMenuButtonSound();
         }
     }
 }

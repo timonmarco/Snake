@@ -33,6 +33,7 @@ namespace Snake
             GameLogic.WallCollisionEnabled = GameMenu.WallCollisionEnabled;
             GameLogic.Difficulty = GameMenu.GameDifficulty;
             GameLogic.ObstaclesEnabled = GameMenu.Obstacles;
+            GameLogic.SoundEnabled = GameMenu.SoundEnabled;
         }
 
         private void GameLogic_UpdateIntervalChanged(object sender, EventArgs e)
@@ -54,10 +55,10 @@ namespace Snake
             {
                 GameLogic.ObstaclesEnabled = GameMenu.Obstacles;
             }
-            //if (e.Itemname == GameMenu.SoundMenuItem.Name)
-            //{
-            //    GameLogic.
-            //}
+            if (e.ItemName == GameMenu.SoundMenuItem.Name)
+            {
+                GameLogic.SoundEnabled = GameMenu.SoundEnabled;
+            }
             gameDrawingControl1.Invalidate();
         }
 

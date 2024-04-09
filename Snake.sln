@@ -5,6 +5,14 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snake", "Snake.csproj", "{10189C53-EB22-4557-A09E-58AC39880EE6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FD97ACD-9B33-4786-A7C1-DA94BA27A474}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\AppleCrunch.mp3 = ..\..\..\Downloads\AppleCrunch.mp3
+		..\..\..\Downloads\GameOver.mp3 = ..\..\..\Downloads\GameOver.mp3
+		..\..\..\Downloads\GameStartEnter.mp3 = ..\..\..\Downloads\GameStartEnter.mp3
+		..\..\..\Downloads\MenuButton.mp3 = ..\..\..\Downloads\MenuButton.mp3
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

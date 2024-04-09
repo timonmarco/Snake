@@ -73,9 +73,9 @@ namespace Snake.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BottomToLeftRightToBottom {
+        internal static System.Drawing.Bitmap block {
             get {
-                object obj = ResourceManager.GetObject("BottomToLeftRightToBottom", resourceCulture);
+                object obj = ResourceManager.GetObject("block", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace Snake.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BottomToRightLeftToBottom {
+        internal static System.Drawing.Bitmap BottomToLeft_RightToBottom {
             get {
-                object obj = ResourceManager.GetObject("BottomToRightLeftToBottom", resourceCulture);
+                object obj = ResourceManager.GetObject("BottomToLeft_RightToBottom", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace Snake.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap poop {
+        internal static System.Drawing.Bitmap BottomToRight_LeftToBottom {
             get {
-                object obj = ResourceManager.GetObject("poop", resourceCulture);
+                object obj = ResourceManager.GetObject("BottomToRight_LeftToBottom", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace Snake.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TopToLeftRightToTop {
+        internal static System.Drawing.Bitmap TopToLeft_RightToTop {
             get {
-                object obj = ResourceManager.GetObject("TopToLeftRightToTop", resourceCulture);
+                object obj = ResourceManager.GetObject("TopToLeft_RightToTop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace Snake.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TopToRightLeftToTop {
+        internal static System.Drawing.Bitmap TopToRight_LeftToTop {
             get {
-                object obj = ResourceManager.GetObject("TopToRightLeftToTop", resourceCulture);
+                object obj = ResourceManager.GetObject("TopToRight_LeftToTop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
