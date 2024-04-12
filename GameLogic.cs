@@ -16,14 +16,11 @@ namespace Snake
         private static Random random = new Random();
         private GameDifficulty difficulty;
         private int updateInterval;
-        private SoundManager eatSoundManager;
-        private SoundManager gameOverSoundManager;
-        private SoundManager menuSoundManager;
-        private SoundManager MenuButtonSoundManager;
-        private SoundManager GameStartSoundManager;
-        private SoundManager GameRunningSoundManager;
+        private GameState currentState;
+
+        public SoundManager SoundManager { get; set; }
+
         public bool ObstaclesEnabled { get; set; } = false;
-        public bool SoundEnabled { get; set; } = false;
 
         public Size GameFieldSize { get; set; } = new Size(20, 20);
 
@@ -62,7 +59,19 @@ namespace Snake
                 }
             }
         }
-        public GameState CurrentState { get; set; }
+        public GameState CurrentState
+        {
+            get => currentState;
+            set
+            {
+                if (currentState != value)
+                {
+                    currentState = value;
+                    OnCurrentStateChanged();
+                }
+            }
+        }
+
 
         public Point Food { get; set; }
 
@@ -75,39 +84,8 @@ namespace Snake
         public GameLogic()
         {
             LoadHighscore();
-            ResetGame();
+            //ResetGame();
             CurrentState = GameState.StartScreen;
-            eatSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\AppleCrunch.mp3");
-            gameOverSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameOver.mp3");
-            menuSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\MenuTheme.mp3");
-            MenuButtonSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\MenuButton.mp3");
-            GameStartSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameStartEnter.mp3");
-            GameRunningSoundManager = new SoundManager("C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameRunning.mp3");
-        }
-
-
-        public void PlayEatSound()
-        {
-            if (SoundEnabled)
-                eatSoundManager.Play();
-        }
-
-        public void PlayGameOverSound()
-        {
-            if (SoundEnabled)
-                gameOverSoundManager.Play();
-        }
-
-        public void PlayMenuSound()
-        {
-            if (SoundEnabled)
-                menuSoundManager.Play();
-        }
-
-        public void PlayMenuButtonSound()
-        {
-            if (SoundEnabled)
-                MenuButtonSoundManager.Play();
         }
 
         public void SnakeHighscore()
@@ -200,7 +178,7 @@ namespace Snake
             {
                 CurrentState = GameState.Gameover;
                 SnakeHighscore();
-                PlayGameOverSound();
+                SoundManager.PlayGameOverSound();
                 return;
             }
 
@@ -213,7 +191,7 @@ namespace Snake
                 else
                 {
                     CurrentState = GameState.Gameover;
-                    PlayGameOverSound();
+                    SoundManager.PlayGameOverSound();
                     SnakeHighscore();
                     return;
                 }
@@ -223,7 +201,7 @@ namespace Snake
             if (SnakeBodyParts.Contains(Food))
             {
                 GenerateFood();
-                PlayEatSound();
+                SoundManager.PlayEatSound();
                 if (Difficulty == GameDifficulty.Nightmare)
                 {
                     UpdateInterval -= 2;
@@ -302,6 +280,24 @@ namespace Snake
             File.WriteAllText(HighscoreFilePath, json);
         }
 
+        private void OnCurrentStateChanged()
+        {
+            if (CurrentState == GameState.Running)
+            {
+                SoundManager.PlayGameRunningSound();
+                SoundManager.StopMenuSound();
+            }
+            else if (CurrentState == GameState.StartScreen)
+            {
+                SoundManager.StopGameRunningSound();
+                SoundManager.PlayMenuSound();
+            }
+            else
+            {
+                SoundManager.StopGameRunningSound();
+                SoundManager.StopMenuSound();
+            }
+        }
         private void OnDifficultyChanged()
         {
             switch (difficulty)

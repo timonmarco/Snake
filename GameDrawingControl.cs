@@ -13,13 +13,11 @@ namespace Snake
         private GameLogic gameLogic;
 
         private Bitmap apple;
-        private Bitmap snakehead;
-        private Bitmap snakebody;
+        private Bitmap snakeHead;
+        private Bitmap snakeBody;
         private Bitmap blockObstacle;
-        private Bitmap TopToLeft_RightToTop;
-        private Bitmap TopToRight_LeftToTop;
-        private Bitmap BottomToRight_LeftToBottom;
-        private Bitmap BottomToLeft_RightToBottom;
+        private Bitmap snakeBodyCounterClockwise;
+        private Bitmap snakeBodyClockwise;
 
         private Font gameOverFont = new Font("Neon Pixel-7", 140f, FontStyle.Bold);
         private Font restartFont = new Font("Nintendo DS BIOS", 30f, FontStyle.Bold);
@@ -47,13 +45,11 @@ namespace Snake
         {
             InitializeComponent();
             apple = Resources.apfel;
-            snakehead = Resources.snakehead;
-            snakebody = Resources.snakebody;
+            snakeHead = Resources.snakehead;
+            snakeBody = Resources.snakebody;
             blockObstacle = Resources.block;
-            TopToLeft_RightToTop = Resources.TopToLeft_RightToTop;
-            TopToRight_LeftToTop = Resources.TopToRight_LeftToTop;
-            BottomToRight_LeftToBottom = Resources.BottomToRight_LeftToBottom;
-            BottomToLeft_RightToBottom = Resources.BottomToLeft_RightToBottom;
+            snakeBodyCounterClockwise = Resources.CounterClockwise;
+            snakeBodyClockwise = Resources.Clockwise;
             coordHelper = new CoordinationSystemHelper(ClientSize, new Size(20, 20));
         }
 
@@ -82,8 +78,11 @@ namespace Snake
             e.Graphics.Clear(BackColor);
             DrawGrid(e.Graphics);
             DrawBodyParts(e.Graphics);
-            DrawFood(e.Graphics);
             DrawObstacle(e.Graphics);
+            if (GameLogic.CurrentState == GameState.Running)
+            {
+                DrawFood(e.Graphics);
+            }
             if (GameLogic.CurrentState == GameState.Gameover)
                 DrawGameOver(e.Graphics);
             if (GameLogic.CurrentState == GameState.StartScreen)
@@ -209,57 +208,87 @@ namespace Snake
         private void DrawBodyParts(Graphics g)
         {
             int lastThreeSnakeElements = 0;
-            foreach (Point part in GameLogic.SnakeBodyParts)
+            var bodyParts = GameLogic.SnakeBodyParts.ToArray();
+            for (int i = 0; i < bodyParts.Length; i++)
             {
+                var part = bodyParts[i];
+                var previousPart = i > 0 ? bodyParts[i - 1] : part;
+                var nextPart = i < bodyParts.Length - 1 ? bodyParts[i + 1] : part;
+
                 RectangleF rectS = coordHelper.ToDrawingRectangle(new Rectangle(part, new Size(1, 1)));
                 if (lastThreeSnakeElements < 3)
                 {
-                    rectS.Inflate(new SizeF(coordHelper.FieldSize.Width / 30f, -coordHelper.FieldSize.Height / 20f));
+                    rectS.Inflate(new SizeF(coordHelper.FieldSize.Width / 20f, coordHelper.FieldSize.Height / 20f));
                 }
                 RectangleF rect = coordHelper.ToDrawingRectangle(new Rectangle(part, new Size(1, 1)));
                 rect.Inflate(new SizeF(coordHelper.FieldSize.Width / 10f, coordHelper.FieldSize.Height / 10f));
 
                 if (part == GameLogic.SnakeBodyParts.Last())
                 {
-                    float angle = 0f;
-                    switch (GameLogic.CurrentSnakeDirection)
-                    {
-                        case Direction.Up:
-                            angle = 270f;
-                            break;
-                        case Direction.Down:
-                            angle = 90f;
-                            break;
-                        case Direction.Left:
-                            angle = 180f;
-                            break;
-                        case Direction.Right:
-                            angle = 0f;
-                            break;
-                    }
-                    DrawRotatedImage(g, snakehead, rect, angle);
+                    float angle = CalculateSnakeheadAngle();
+                    DrawRotatedImage(g, snakeHead, rect, angle);
                 }
                 else
                 {
-                    int currentIndex = GameLogic.SnakeBodyParts.ToList().IndexOf(part);
-                    Point nextPart = GameLogic.SnakeBodyParts.ElementAt(currentIndex + 1);
-                    float angle = CalculateAngle(part, nextPart);
-                    //Bitmap image = GetCurveSnakeBody(part, nextPart);
-                    DrawRotatedImage(g, snakebody, rectS, angle);
+                    var (Image, Angle) = GetCurveSnakeBody(previousPart, part, nextPart);
+                    DrawRotatedImage(g, Image, rectS, Angle);
                 }
             }
         }
+        private (Bitmap Image, float Angle) GetCurveSnakeBody(Point previousPart, Point part, Point nextPart)
+        {
+            var directionPartial = GetDirectionFromPoints(previousPart, part);
+            var directionTotal = GetDirectionFromPoints(previousPart, nextPart);
 
+            switch (directionTotal)
+            {
+                case Direction.Up:
+                    return (snakeBody, 270f);
+                case Direction.Down:
+                    return (snakeBody, 90f);
+                case Direction.Left:
+                    return (snakeBody, 180f);
+                case Direction.Right:
+                    return (snakeBody, 0f);
+                case Direction.UpLeft:
+                    return directionPartial == Direction.Up
+                        ? (snakeBodyCounterClockwise, 90f)
+                        : (snakeBodyClockwise, 180f);
+                case Direction.UpRight:
+                    return directionPartial == Direction.Up
+                        ? (snakeBodyClockwise, 270f)
+                        : (snakeBodyCounterClockwise, 180f);
+                case Direction.DownLeft:
+                    return directionPartial == Direction.Down
+                        ? (snakeBodyClockwise, 90f)
+                        : (snakeBodyCounterClockwise, 0f);
+                case Direction.DownRight:
+                    return directionPartial == Direction.Down
+                        ? (snakeBodyCounterClockwise, 270f)
+                        : (snakeBodyClockwise, 0f);
+                default:
+                    return (snakeBody, 0f);
+            }
+        }
 
-        //private Bitmap GetCurveSnakeBody(Point currentPart, Point nextPart)
-        //{
-        //    int calcX = nextPart.X - currentPart.X;
-        //    int calcY = nextPart.Y - currentPart.Y;
-
-        //    if (calcX == 0 && calcY == -1)
-        //        return BottomToLeft_RightToBottom;
-
-        //}
+        private Direction GetDirectionFromPoints(Point a, Point b)
+        {
+            if (a.X == b.X && a.Y < b.Y)
+                return Direction.Down;
+            else if (a.X == b.X && a.Y > b.Y)
+                return Direction.Up;
+            else if (a.X < b.X && a.Y == b.Y)
+                return Direction.Right;
+            else if (a.X > b.X && a.Y == b.Y)
+                return Direction.Left;
+            else if (a.X > b.X && a.Y > b.Y)
+                return Direction.UpLeft;
+            else if (a.X < b.X && a.Y > b.Y)
+                return Direction.UpRight;
+            else if (a.X > b.X && a.Y < b.Y)
+                return Direction.DownLeft;
+            return Direction.DownRight;
+        }
 
         private void DrawRotatedImage(Graphics g, Bitmap image, RectangleF rect, float angle)
         {
@@ -272,16 +301,27 @@ namespace Snake
             }
         }
 
-        private float CalculateAngle(Point currentPart, Point nextPart)
+        private float CalculateSnakeheadAngle()
         {
-            if (nextPart.X == currentPart.X + 1)
-                return 0f;
-            else if (nextPart.X == currentPart.X - 1)
-                return 180f;
-            else if (nextPart.Y == currentPart.Y + 1)
-                return 90f;
-            else
-                return 270f;
+            Direction currentDirection = GameLogic.CurrentSnakeDirection;
+            float angle = 0f;
+
+            switch (currentDirection)
+            {
+                case Direction.Up:
+                    angle = 270f;
+                    break;
+                case Direction.Down:
+                    angle = 90f;
+                    break;
+                case Direction.Left:
+                    angle = 180f;
+                    break;
+                case Direction.Right:
+                    angle = 0f;
+                    break;
+            }
+            return angle;
         }
 
         protected override void OnLayout(LayoutEventArgs e)

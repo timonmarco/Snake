@@ -124,22 +124,16 @@
   <data name="block" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\block.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BottomToLeft_RightToBottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BottomToLeftRightToBottom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Clockwise" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Clockwise.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BottomToRight_LeftToBottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BottomToRightLeftToBottom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CounterClockwise" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CounterClockwise.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="snakebody" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\snakebody.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="snakehead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\snakehead.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TopToLeft_RightToTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TopToLeftRightToTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TopToRight_LeftToTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TopToRightLeftToTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

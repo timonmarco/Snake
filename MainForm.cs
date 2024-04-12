@@ -12,12 +12,16 @@ namespace Snake
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Menu GameMenu { get; } = new Menu();
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SoundManager SoundManager { get; set; } = new SoundManager();
+
         public MainForm()
         {
             InitializeComponent();
             GameLogic.UpdateIntervalChanged += GameLogic_UpdateIntervalChanged;
             gameDrawingControl1.GameLogic = GameLogic;
             gameDrawingControl1.Menu = GameMenu;
+            GameLogic.SoundManager = SoundManager;
             GameMenu.MenuItemChanged += GameMenu_MenuItemChanged;
             GameLogic.UpdateSnakeLivescore += GameLogic_UpdateSnakeLivescore;
             SetupGameLogic();
@@ -33,7 +37,7 @@ namespace Snake
             GameLogic.WallCollisionEnabled = GameMenu.WallCollisionEnabled;
             GameLogic.Difficulty = GameMenu.GameDifficulty;
             GameLogic.ObstaclesEnabled = GameMenu.Obstacles;
-            GameLogic.SoundEnabled = GameMenu.SoundEnabled;
+            SoundManager.SoundEnabled = GameMenu.SoundEnabled;
         }
 
         private void GameLogic_UpdateIntervalChanged(object sender, EventArgs e)
@@ -57,7 +61,7 @@ namespace Snake
             }
             if (e.ItemName == GameMenu.SoundMenuItem.Name)
             {
-                GameLogic.SoundEnabled = GameMenu.SoundEnabled;
+                SoundManager.SoundEnabled = GameMenu.SoundEnabled;
             }
             gameDrawingControl1.Invalidate();
         }
@@ -78,6 +82,7 @@ namespace Snake
                 if (GameLogic.CurrentState != GameState.Running)
                 {
                     GameLogic.ResetGame();
+                    SoundManager.PlayGameStartSound();
                 }
                 return true;
             }
@@ -123,24 +128,28 @@ namespace Snake
             if (keyData == Keys.Up)
             {
                 GameMenu.SelectPreviousMenuItem();
+                SoundManager.PlayMenuButtonSound();
                 return true;
             }
 
             if (keyData == Keys.Down)
             {
                 GameMenu.SelectNextMenuItem();
+                SoundManager.PlayMenuButtonSound();
                 return true;
             }
 
             if (keyData == Keys.Left)
             {
                 GameMenu.SelectPreviousOption();
+                SoundManager.PlayMenuButtonSound();
                 return true;
             }
 
             if (keyData == Keys.Right)
             {
                 GameMenu.SelectNextOption();
+                SoundManager.PlayMenuButtonSound();
                 return true;
             }
             return false;

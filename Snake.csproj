@@ -76,7 +76,13 @@
     <Compile Include="MenuItemChangedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SoundManager.cs" />
+    <Compile Include="SoundPlayer.cs" />
     <EmbeddedResource Include="GameDrawingControl.resx">
       <DependentUpon>GameDrawingControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,14 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -114,9 +115,6 @@
     <None Include="Resources\snakehead.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\snakebody.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\poop.png" />
   </ItemGroup>
   <ItemGroup>
@@ -124,12 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TopToRightLeftToTop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BottomToRightLeftToBottom.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BottomToLeftRightToBottom.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxWMPLib">
@@ -155,9 +147,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\AppleCrunch.mp3" />
+    <None Include="Resources\CounterClockwise.png" />
+    <None Include="Resources\Clockwise.png" />
+    <Content Include="Resources\GameMenuTheme.mp3" />
     <Content Include="Resources\GameOver.mp3" />
     <Content Include="Resources\GameStartEnter.mp3" />
     <Content Include="Resources\MenuButton.mp3" />
+    <None Include="Resources\snakebody.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

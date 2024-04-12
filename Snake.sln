@@ -8,7 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FD97ACD-9B33-4786-A7C1-DA94BA27A474}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\Downloads\AppleCrunch.mp3 = ..\..\..\Downloads\AppleCrunch.mp3
+		..\..\..\Downloads\GameMenuTheme.mp3 = ..\..\..\Downloads\GameMenuTheme.mp3
 		..\..\..\Downloads\GameOver.mp3 = ..\..\..\Downloads\GameOver.mp3
+		..\..\..\Downloads\GameRunning.mp3 = ..\..\..\Downloads\GameRunning.mp3
 		..\..\..\Downloads\GameStartEnter.mp3 = ..\..\..\Downloads\GameStartEnter.mp3
 		..\..\..\Downloads\MenuButton.mp3 = ..\..\..\Downloads\MenuButton.mp3
 	EndProjectSection
