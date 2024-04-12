@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Snake
 {
-    public partial class GameLogic
+    public partial class GameLogic : Snake.AI.ISnakeGame
     {
         public event EventHandler UpdateIntervalChanged;
         public event EventHandler UpdateSnakeLivescore;
@@ -17,6 +17,7 @@ namespace Snake
         private GameDifficulty difficulty;
         private int updateInterval;
         private GameState currentState;
+        private AI.SnakeGameState currentAIState = new();
 
         public SoundManager SoundManager { get; set; }
 
@@ -81,6 +82,10 @@ namespace Snake
 
         public Direction NextSnakeDirection { get; set; } = Direction.Right;
 
+        AI.SnakeGameState AI.ISnakeGame.GameState => currentAIState;
+        int AI.ISnakeGame.Height => GameFieldSize.Height;
+        int AI.ISnakeGame.Width => GameFieldSize.Width;
+
         public GameLogic()
         {
             LoadHighscore();
@@ -120,6 +125,7 @@ namespace Snake
             SnakeBodyParts.Enqueue(new Point(6, 5));
             SnakeBodyParts.Enqueue(new Point(7, 5));
             GenerateFood();
+            UpdateAIState();
         }
 
         public void GenerateFood()
@@ -146,6 +152,22 @@ namespace Snake
         }
 
         public void Update()
+        {
+            UpdateInternal();
+            UpdateAIState();
+        }
+
+        private void UpdateAIState()
+        {
+            currentAIState = new()
+            {
+                Snake = new System.Collections.ObjectModel.ReadOnlyCollection<AI.Point>(SnakeBodyParts.Select(p => new AI.Point(p.X, p.Y)).Reverse().ToList()),
+                Apples = new System.Collections.ObjectModel.ReadOnlyCollection<AI.Point>([new AI.Point(Food.X, Food.Y)]),
+                Direction = MapDirection(CurrentSnakeDirection),
+            };
+        }
+
+        private void UpdateInternal()
         {
             CurrentSnakeDirection = NextSnakeDirection;
             if (CurrentState != GameState.Running)
@@ -204,7 +226,7 @@ namespace Snake
                 SoundManager.PlayEatSound();
                 if (Difficulty == GameDifficulty.Nightmare)
                 {
-                    UpdateInterval -= 2;
+                    UpdateInterval = Math.Max(UpdateInterval - 2, 20);
                 }
 
                 if (ObstaclesEnabled && SnakeBodyParts.Count % 5 == 0)
@@ -326,5 +348,27 @@ namespace Snake
         {
             UpdateSnakeLivescore?.Invoke(this, EventArgs.Empty);
         }
+
+        void AI.ISnakeGame.SetDirection(AI.Direction direction) => NextSnakeDirection = MapDirection(direction);
+
+        private Direction MapDirection(AI.Direction direction) => direction switch
+        {
+            AI.Direction.Up => Direction.Up,
+            AI.Direction.Down => Direction.Down,
+            AI.Direction.Left => Direction.Left,
+            AI.Direction.Right => Direction.Right,
+        };
+
+        private AI.Direction MapDirection(Direction direction) => direction switch
+        {
+            Direction.Up => AI.Direction.Up,
+            Direction.Down => AI.Direction.Down,
+            Direction.Left => AI.Direction.Left,
+            Direction.Right => AI.Direction.Right,
+            Direction.UpLeft => throw new NotImplementedException(),
+            Direction.UpRight => throw new NotImplementedException(),
+            Direction.DownLeft => throw new NotImplementedException(),
+            Direction.DownRight => throw new NotImplementedException(),
+        };
     }
 }

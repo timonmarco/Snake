@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Snake
 {
     public partial class MainForm : Form
     {
+        private AI.SnakeAI ai;
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GameLogic GameLogic { get; } = new GameLogic();
 
@@ -83,11 +86,13 @@ namespace Snake
                 {
                     GameLogic.ResetGame();
                     SoundManager.PlayGameStartSound();
+                    ai = new();
+                    _ = Task.Run(() => ai.ControlSnakeAsync(GameLogic));
                 }
                 return true;
             }
-            if (GameLogic.CurrentState == GameState.Running && ProcessSnakeKeys(keyData))
-                return true;
+            //if (GameLogic.CurrentState == GameState.Running && ProcessSnakeKeys(keyData))
+            //    return true;
 
             if (GameLogic.CurrentState == GameState.StartScreen && ProcessMenuKeys(keyData))
                 return true;
