@@ -22,7 +22,6 @@ namespace Snake
         private Font gameOverFont = new Font("Neon Pixel-7", 140f, FontStyle.Bold);
         private Font restartFont = new Font("Nintendo DS BIOS", 30f, FontStyle.Bold);
         private Font StartGameHeaderFont = new Font("Neon Pixel-7", 190f, FontStyle.Bold);
-
         private Brush menuBrush = Brushes.Purple;
         private Brush startMenuBrush = Brushes.Maroon;
         private Brush gameOverBackgroundBrush = new SolidBrush(Color.FromArgb(100, Color.White));

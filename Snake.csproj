@@ -146,13 +146,26 @@
     <None Include="Resources\block.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AppleCrunch.mp3" />
+    <Content Include="Resources\AppleCrunch.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\CounterClockwise.png" />
     <None Include="Resources\Clockwise.png" />
-    <Content Include="Resources\GameMenuTheme.mp3" />
-    <Content Include="Resources\GameOver.mp3" />
-    <Content Include="Resources\GameStartEnter.mp3" />
-    <Content Include="Resources\MenuButton.mp3" />
+    <Content Include="Resources\GameMenuTheme.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\GameOver.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\GameRunning.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\GameStartEnter.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MenuButton.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\snakebody.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

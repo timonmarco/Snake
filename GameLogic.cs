@@ -24,8 +24,6 @@ namespace Snake
 
         public Size GameFieldSize { get; set; } = new Size(20, 20);
 
-        public Size SingleFieldSize { get; set; } = new Size(1, 1);
-
         public Queue<Point> SnakeBodyParts { get; set; } = new Queue<Point>();
 
         public List<Point> Obstacles { get; set; } = new List<Point>();
@@ -72,16 +70,13 @@ namespace Snake
             }
         }
 
-
         public Point Food { get; set; }
-
-        public Point Obstacle { get; set; }
 
         public Direction CurrentSnakeDirection { get; private set; } = Direction.Right;
 
         public Direction NextSnakeDirection { get; set; } = Direction.Right;
 
-        public GameLogic()
+        public void Run()
         {
             LoadHighscore();
             //ResetGame();
@@ -204,7 +199,7 @@ namespace Snake
                 SoundManager.PlayEatSound();
                 if (Difficulty == GameDifficulty.Nightmare)
                 {
-                    UpdateInterval -= 2;
+                    UpdateInterval = Math.Max(UpdateInterval - 2, 20);
                 }
 
                 if (ObstaclesEnabled && SnakeBodyParts.Count % 5 == 0)

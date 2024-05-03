@@ -10,16 +10,29 @@ public class SoundManager
     private readonly SoundPlayer[] players = new SoundPlayer[20];
     private readonly SoundPlayer backgorundGameSoundPlayer = new SoundPlayer();
     private readonly SoundPlayer backgorundMenuSoundPlayer = new SoundPlayer();
-    public bool SoundEnabled { get; set; }
+    private bool soundEnabled;
+
+    public bool SoundEnabled
+    {
+        get => soundEnabled;
+        set
+        {
+            if (soundEnabled != value)
+            {
+                soundEnabled = value;
+                OnSoundEnabledChanged();
+            }
+        }
+    }
 
     public SoundManager()
     {
-        eatSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\AppleCrunch.mp3";
-        gameOverSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameOver.mp3";
-        menuSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameMenuTheme.mp3";
-        menuButtonSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\MenuButton.mp3";
-        gameStartSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameStartEnter.mp3";
-        gameRunningSoundPath = "C:\\Users\\paetkau\\source\\repos\\Snake\\Resources\\GameRunning.mp3";
+        eatSoundPath = "AppleCrunch.mp3";
+        gameOverSoundPath = "GameOver.mp3";
+        menuSoundPath = "GameMenuTheme.mp3";
+        menuButtonSoundPath = "MenuButton.mp3";
+        gameStartSoundPath = "GameStartEnter.mp3";
+        gameRunningSoundPath = "GameRunning.mp3";
         for (int i = 0; i < players.Length; i++)
         {
             players[i] = new SoundPlayer();
@@ -66,12 +79,19 @@ public class SoundManager
 
     public void StopMenuSound()
     {
-        if (!SoundEnabled)
-            return;
         backgorundMenuSoundPlayer.Stop();
     }
 
     public void PlayMenuButtonSound() => PlaySoundInQueue(menuButtonSoundPath);
 
     public void PlayGameStartSound() => PlaySoundInQueue(gameStartSoundPath);
+
+    private void OnSoundEnabledChanged()
+    {
+        if (!SoundEnabled)
+        {
+            StopMenuSound();
+            StopGameRunningSound();
+        }
+    }
 }

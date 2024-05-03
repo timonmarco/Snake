@@ -25,6 +25,7 @@ namespace Snake
             GameMenu.MenuItemChanged += GameMenu_MenuItemChanged;
             GameLogic.UpdateSnakeLivescore += GameLogic_UpdateSnakeLivescore;
             SetupGameLogic();
+            GameLogic.Run();
         }
 
         private void GameLogic_UpdateSnakeLivescore(object sender, EventArgs e)
@@ -62,6 +63,8 @@ namespace Snake
             if (e.ItemName == GameMenu.SoundMenuItem.Name)
             {
                 SoundManager.SoundEnabled = GameMenu.SoundEnabled;
+                if (SoundManager.SoundEnabled)
+                    SoundManager.PlayMenuSound();
             }
             gameDrawingControl1.Invalidate();
         }

@@ -12,12 +12,6 @@ public class SoundPlayer
         player = new WindowsMediaPlayer();
     }
 
-    public SoundPlayer(bool playAsLoop)
-        : this()
-    {
-        playAsLoop = playAsLoop;
-    }
-
     public void Play(string soundFile)
     {
         CurrentSoundFile = soundFile;
